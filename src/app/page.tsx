@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useSession, signOut } from "next-auth/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { HarmonicLogo } from "@/components/HarmonicLogo";
 
 const SAMPLE_MARKDOWN = `I now have comprehensive data to map out pathways. Let me compile the findings.
 
@@ -67,6 +69,7 @@ Several Vale email addresses appear in correspondence but don't yet have enriche
 *Source: Harmonic — team network connections to Vale (vale.com)*`;
 
 export default function Home() {
+  const { data: session } = useSession();
   const [markdown, setMarkdown] = useState(SAMPLE_MARKDOWN);
   const [mode, setMode] = useState<"view" | "edit">("view");
 
@@ -112,6 +115,24 @@ export default function Home() {
             >
               Clear
             </button>
+          )}
+          {session?.user && (
+            <>
+              <div
+                className="h-4 w-px mx-1"
+                style={{ background: "#e5e7eb" }}
+              />
+              <span className="text-xs" style={{ color: "#6b7280" }}>
+                {session.user.email}
+              </span>
+              <button
+                onClick={() => signOut()}
+                className="text-xs font-medium px-3 py-1.5 rounded-md transition-colors cursor-pointer"
+                style={{ background: "#f3f4f6", color: "#374151" }}
+              >
+                Sign out
+              </button>
+            </>
           )}
         </div>
       </header>
@@ -182,27 +203,3 @@ export default function Home() {
   );
 }
 
-function HarmonicLogo() {
-  return (
-    <div className="flex items-center gap-2">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect width="24" height="24" rx="6" fill="#6366f1" />
-        <path
-          d="M7 8.5C7 8.22386 7.22386 8 7.5 8H9.5C9.77614 8 10 8.22386 10 8.5V15.5C10 15.7761 9.77614 16 9.5 16H7.5C7.22386 16 7 15.7761 7 15.5V8.5Z"
-          fill="white"
-        />
-        <path
-          d="M11 11H13V13H11V11Z"
-          fill="white"
-        />
-        <path
-          d="M14 8.5C14 8.22386 14.2239 8 14.5 8H16.5C16.7761 8 17 8.22386 17 8.5V15.5C17 15.7761 16.7761 16 16.5 16H14.5C14.2239 16 14 15.7761 14 15.5V8.5Z"
-          fill="white"
-        />
-      </svg>
-      <span className="font-semibold text-sm" style={{ color: "#111827" }}>
-        Harmonic
-      </span>
-    </div>
-  );
-}
