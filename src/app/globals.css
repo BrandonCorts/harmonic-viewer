@@ -248,3 +248,46 @@ body {
 .markdown-input::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+
+/* Sidebar */
+.sidebar {
+  transition: width 0.2s ease;
+}
+
+.sidebar-collapsed {
+  transition: width 0.2s ease;
+}
+
+.sidebar-item:hover {
+  background: #f3f4f6 !important;
+}
+
+.sidebar-item:hover button {
+  color: #dc2626;
+}
+
+/* Dialog / Modal */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.dialog-panel {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-panel input:focus {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+}
