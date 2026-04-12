@@ -12,34 +12,30 @@ function LoginContent() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: "#f8f9fa" }}
+      style={{ background: "#fff" }}
     >
       <div
-        className="w-full max-w-sm rounded-lg border shadow-sm p-8 text-center"
-        style={{ background: "#ffffff", borderColor: "#e5e7eb" }}
+        className="w-full max-w-sm border p-8 text-center"
+        style={{ background: "#fff", borderColor: "#000" }}
       >
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-8">
           <HarmonicLogo />
         </div>
 
         <h1
-          className="text-lg font-semibold mb-1"
-          style={{ color: "#111827" }}
+          className="shell-label mb-1"
+          style={{ color: "#000", fontSize: "14px" }}
         >
-          Welcome
+          WELCOME
         </h1>
-        <p className="text-xs mb-6" style={{ color: "#6b7280" }}>
+        <p className="text-xs mb-8" style={{ color: "#A6A6A6" }}>
           Sign in with your @newlab.com Google account
         </p>
 
         {error === "AccessDenied" && (
           <div
-            className="text-xs mb-4 p-3 rounded-md"
-            style={{
-              background: "#fef2f2",
-              color: "#dc2626",
-              border: "1px solid #fecaca",
-            }}
+            className="text-xs mb-4 p-3 border"
+            style={{ color: "#dc2626", borderColor: "#dc2626" }}
           >
             Access denied. Only @newlab.com accounts are allowed.
           </div>
@@ -47,12 +43,8 @@ function LoginContent() {
 
         {error && error !== "AccessDenied" && (
           <div
-            className="text-xs mb-4 p-3 rounded-md"
-            style={{
-              background: "#fef2f2",
-              color: "#dc2626",
-              border: "1px solid #fecaca",
-            }}
+            className="text-xs mb-4 p-3 border"
+            style={{ color: "#dc2626", borderColor: "#dc2626" }}
           >
             Something went wrong. Please try again.
           </div>
@@ -60,14 +52,11 @@ function LoginContent() {
 
         <button
           onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
-          style={{
-            background: "#6366f1",
-            color: "#ffffff",
-          }}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors cursor-pointer"
+          style={{ background: "#005eff", color: "#fff" }}
         >
           <GoogleIcon />
-          Sign in with Google
+          SIGN IN WITH GOOGLE
         </button>
       </div>
     </div>

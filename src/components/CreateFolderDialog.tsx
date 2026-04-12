@@ -2,39 +2,44 @@
 
 import { useState, useEffect, useRef } from "react";
 
-interface SaveDialogProps {
+interface CreateFolderDialogProps {
   isOpen: boolean;
-  initialName: string;
+  parentFolderName: string | null;
   onSave: (name: string) => void;
   onCancel: () => void;
   error?: string | null;
 }
 
-export function SaveDialog({
+export function CreateFolderDialog({
   isOpen,
-  initialName,
+  parentFolderName,
   onSave,
   onCancel,
   error,
-}: SaveDialogProps) {
-  const [name, setName] = useState(initialName);
+}: CreateFolderDialogProps) {
+  const [name, setName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setName(initialName);
-      setTimeout(() => inputRef.current?.select(), 50);
+      setName("");
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
-  }, [isOpen, initialName]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
     <div className="dialog-overlay" onClick={onCancel}>
       <div className="dialog-panel" onClick={(e) => e.stopPropagation()}>
-        <h3 className="shell-label mb-4" style={{ color: "#000", fontSize: "12px" }}>
-          SAVE DOCUMENT
+        <h3 className="shell-label mb-1" style={{ color: "#000", fontSize: "12px" }}>
+          NEW FOLDER
         </h3>
+        {parentFolderName && (
+          <p className="text-xs mb-3" style={{ color: "#A6A6A6" }}>
+            Inside: {parentFolderName}
+          </p>
+        )}
 
         <input
           ref={inputRef}
@@ -45,7 +50,7 @@ export function SaveDialog({
             if (e.key === "Enter" && name.trim()) onSave(name.trim());
             if (e.key === "Escape") onCancel();
           }}
-          placeholder="Document name"
+          placeholder="Folder name"
           className="w-full px-3 py-2 text-sm border mb-2"
           style={{
             borderColor: error ? "#dc2626" : "#000",
@@ -56,9 +61,7 @@ export function SaveDialog({
         />
 
         {error && (
-          <p className="text-xs mb-3" style={{ color: "#dc2626" }}>
-            {error}
-          </p>
+          <p className="text-xs mb-3" style={{ color: "#dc2626" }}>{error}</p>
         )}
 
         <div className="flex justify-end gap-2 mt-4">
@@ -79,7 +82,7 @@ export function SaveDialog({
               fontSize: "11px",
             }}
           >
-            SAVE
+            CREATE
           </button>
         </div>
       </div>

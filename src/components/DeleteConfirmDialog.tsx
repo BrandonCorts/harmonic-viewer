@@ -17,34 +17,28 @@ export function DeleteConfirmDialog({
 
   return (
     <div className="dialog-overlay" onClick={onCancel}>
-      <div
-        className="dialog-panel"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3
-          className="text-sm font-semibold mb-2"
-          style={{ color: "#111827" }}
-        >
-          Delete Document
+      <div className="dialog-panel" onClick={(e) => e.stopPropagation()}>
+        <h3 className="shell-label mb-2" style={{ color: "#000", fontSize: "12px" }}>
+          DELETE DOCUMENT
         </h3>
-        <p className="text-xs mb-4" style={{ color: "#6b7280" }}>
+        <p className="text-xs mb-4" style={{ color: "#A6A6A6" }}>
           Are you sure you want to delete &ldquo;{documentName}&rdquo;? This
           cannot be undone.
         </p>
         <div className="flex justify-end gap-2">
           <button
             onClick={onCancel}
-            className="text-xs font-medium px-3 py-1.5 rounded-md cursor-pointer"
-            style={{ background: "#f3f4f6", color: "#374151" }}
+            className="shell-label px-3 py-1.5 cursor-pointer border"
+            style={{ background: "#fff", color: "#000", borderColor: "#000", fontSize: "11px" }}
           >
-            Cancel
+            CANCEL
           </button>
           <button
             onClick={onConfirm}
-            className="text-xs font-medium px-3 py-1.5 rounded-md cursor-pointer"
-            style={{ background: "#dc2626", color: "#ffffff" }}
+            className="shell-label px-3 py-1.5 cursor-pointer"
+            style={{ background: "#dc2626", color: "#fff", fontSize: "11px" }}
           >
-            Delete
+            DELETE
           </button>
         </div>
       </div>

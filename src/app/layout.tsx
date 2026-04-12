@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Mono } from "next/font/google";
 import { SessionProvider } from "@/components/SessionProvider";
 import "./globals.css";
 
@@ -13,9 +13,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
-  title: "Harmonic Viewer",
-  description: "View Harmonic AI markdown outputs in Harmonic style",
+  title: "Newlab — Harmonic Viewer",
+  description: "View and manage Harmonic AI markdown outputs",
 };
 
 export default function RootLayout({
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SessionProvider>{children}</SessionProvider>

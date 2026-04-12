@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { name, content } = body;
+  const { name, content, folderId } = body;
 
   if (!name || typeof name !== "string" || name.trim().length === 0) {
     return Response.json({ error: "Name is required" }, { status: 400 });
@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
     const document = await createDocument(
       session.user.email,
       name.trim(),
-      content || ""
+      content || "",
+      folderId || null
     );
     return Response.json(document, { status: 201 });
   } catch (error: unknown) {

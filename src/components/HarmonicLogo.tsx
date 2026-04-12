@@ -1,8 +1,8 @@
 export function HarmonicLogo() {
   return (
     <div className="flex items-center gap-2">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect width="24" height="24" rx="6" fill="#6366f1" />
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" fill="#000" />
         <path
           d="M7 8.5C7 8.22386 7.22386 8 7.5 8H9.5C9.77614 8 10 8.22386 10 8.5V15.5C10 15.7761 9.77614 16 9.5 16H7.5C7.22386 16 7 15.7761 7 15.5V8.5Z"
           fill="white"
@@ -13,8 +13,8 @@ export function HarmonicLogo() {
           fill="white"
         />
       </svg>
-      <span className="font-semibold text-sm" style={{ color: "#111827" }}>
-        Harmonic
+      <span className="shell-label" style={{ fontSize: "13px", letterSpacing: "0.08em", color: "#000" }}>
+        NEWLAB
       </span>
     </div>
   );
