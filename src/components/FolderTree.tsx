@@ -11,6 +11,7 @@ interface FolderTreeProps {
   onToggleExpand: (folderId: string) => void;
   onOpenDocument: (id: string) => void;
   onDeleteDocument: (id: string, name: string) => void;
+  onMoveDocument: (id: string, name: string, currentFolderId: string | null) => void;
   onDeleteFolder: (id: string) => void;
   onCreateFolder: (parentId: string | null) => void;
 }
@@ -24,6 +25,7 @@ export function FolderTree({
   onToggleExpand,
   onOpenDocument,
   onDeleteDocument,
+  onMoveDocument,
   onDeleteFolder,
   onCreateFolder,
 }: FolderTreeProps) {
@@ -57,13 +59,7 @@ export function FolderTree({
                     opacity: hasChildren ? 1 : 0.3,
                   }}
                 >
-                  <path
-                    d="M6 3L11 8L6 13"
-                    stroke="#000"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M6 3L11 8L6 13" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path
@@ -73,19 +69,13 @@ export function FolderTree({
                     fill={isExpanded ? "#f0f5ff" : "none"}
                   />
                 </svg>
-                <span
-                  className="text-xs font-medium truncate"
-                  style={{ color: "#000" }}
-                >
+                <span className="text-xs font-medium truncate" style={{ color: "#000" }}>
                   {folder.name}
                 </span>
               </div>
               <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onCreateFolder(folder.id);
-                  }}
+                  onClick={(e) => { e.stopPropagation(); onCreateFolder(folder.id); }}
                   className="p-0.5 cursor-pointer"
                   style={{ color: "#A6A6A6" }}
                   title="New subfolder"
@@ -95,22 +85,13 @@ export function FolderTree({
                   </svg>
                 </button>
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteFolder(folder.id);
-                  }}
+                  onClick={(e) => { e.stopPropagation(); onDeleteFolder(folder.id); }}
                   className="p-0.5 cursor-pointer"
                   style={{ color: "#A6A6A6" }}
                   title="Delete folder"
                 >
                   <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M2 4h12M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1M3.5 4l.5 9a1 1 0 001 1h6a1 1 0 001-1l.5-9"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M2 4h12M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1M3.5 4l.5 9a1 1 0 001 1h6a1 1 0 001-1l.5-9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
               </div>
@@ -127,6 +108,7 @@ export function FolderTree({
                   onToggleExpand={onToggleExpand}
                   onOpenDocument={onOpenDocument}
                   onDeleteDocument={onDeleteDocument}
+                  onMoveDocument={onMoveDocument}
                   onDeleteFolder={onDeleteFolder}
                   onCreateFolder={onCreateFolder}
                 />
@@ -147,6 +129,10 @@ export function FolderTree({
             borderLeft: doc.id === currentDocumentId ? "2px solid #005eff" : "2px solid transparent",
           }}
           onClick={() => onOpenDocument(doc.id)}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            onMoveDocument(doc.id, doc.name, doc.folder_id);
+          }}
         >
           <div className="flex-1 min-w-0">
             <div
@@ -156,25 +142,35 @@ export function FolderTree({
               {doc.name}
             </div>
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onDeleteDocument(doc.id, doc.name);
-            }}
-            className="opacity-0 group-hover:opacity-100 p-0.5 cursor-pointer transition-opacity"
-            style={{ color: "#A6A6A6" }}
-            title="Delete"
-          >
-            <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M2 4h12M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1M3.5 4l.5 9a1 1 0 001 1h6a1 1 0 001-1l.5-9"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+          <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onMoveDocument(doc.id, doc.name, doc.folder_id);
+              }}
+              className="p-0.5 cursor-pointer"
+              style={{ color: "#A6A6A6" }}
+              title="Move to folder"
+            >
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                <path d="M2 4.5C2 3.67 2.67 3 3.5 3H6.5L8 5H12.5C13.33 5 14 5.67 14 6.5V11.5C14 12.33 13.33 13 12.5 13H3.5C2.67 13 2 12.33 2 11.5V4.5Z" stroke="currentColor" strokeWidth="1.2" fill="none" />
+                <path d="M8 7v4M6 9l2-2 2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteDocument(doc.id, doc.name);
+              }}
+              className="p-0.5 cursor-pointer"
+              style={{ color: "#A6A6A6" }}
+              title="Delete"
+            >
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                <path d="M2 4h12M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1M3.5 4l.5 9a1 1 0 001 1h6a1 1 0 001-1l.5-9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
       ))}
     </>

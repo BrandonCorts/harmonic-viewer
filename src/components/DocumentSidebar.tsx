@@ -20,6 +20,7 @@ interface DocumentSidebarProps {
   onDeleteDocument: (id: string, name: string) => void;
   onDeleteFolder: (id: string) => void;
   onCreateFolder: (parentId: string | null) => void;
+  onMoveDocument: (id: string, name: string, currentFolderId: string | null) => void;
   onToggleFolderExpand: (folderId: string) => void;
   onSortByChange: (sortBy: SortBy) => void;
   onSortOrderChange: (sortOrder: SortOrder) => void;
@@ -42,6 +43,7 @@ export function DocumentSidebar({
   onDeleteDocument,
   onDeleteFolder,
   onCreateFolder,
+  onMoveDocument,
   onToggleFolderExpand,
   onSortByChange,
   onSortOrderChange,
@@ -163,6 +165,7 @@ export function DocumentSidebar({
             onToggleExpand={onToggleFolderExpand}
             onOpenDocument={onOpenDocument}
             onDeleteDocument={onDeleteDocument}
+            onMoveDocument={onMoveDocument}
             onDeleteFolder={onDeleteFolder}
             onCreateFolder={onCreateFolder}
           />

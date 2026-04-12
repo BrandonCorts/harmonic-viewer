@@ -10,6 +10,7 @@ import { SaveDialog } from "@/components/SaveDialog";
 import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { CreateFolderDialog } from "@/components/CreateFolderDialog";
 import { ShareDialog } from "@/components/ShareDialog";
+import { MoveToDialog } from "@/components/MoveToDialog";
 import { useDocuments } from "@/hooks/useDocuments";
 
 export default function Home() {
@@ -35,6 +36,7 @@ export default function Home() {
     newDocument,
     createFolder,
     deleteFolder,
+    moveDocument,
     toggleFolderExpand,
     shareDocument,
     unshareDocument,
@@ -49,6 +51,7 @@ export default function Home() {
   const [showDeleteDialog, setShowDeleteDialog] = useState<{ id: string; name: string } | null>(null);
   const [showCreateFolderDialog, setShowCreateFolderDialog] = useState<{ parentId: string | null } | null>(null);
   const [showShareDialog, setShowShareDialog] = useState(false);
+  const [showMoveDialog, setShowMoveDialog] = useState<{ id: string; name: string; currentFolderId: string | null } | null>(null);
 
   useEffect(() => {
     if (currentDocument) setMarkdown(currentDocument.content);
@@ -180,6 +183,15 @@ export default function Home() {
                 SAVE AS
               </button>
               <button
+                onClick={() => {
+                  if (currentDocument) setShowMoveDialog({ id: currentDocument.id, name: currentDocument.name, currentFolderId: currentDocument.folder_id });
+                }}
+                className="shell-label px-3 py-1.5 transition-colors cursor-pointer border"
+                style={{ background: "#fff", color: "#000", borderColor: "#000", fontSize: "11px" }}
+              >
+                MOVE
+              </button>
+              <button
                 onClick={() => setShowShareDialog(true)}
                 className="shell-label px-3 py-1.5 transition-colors cursor-pointer border"
                 style={{ background: "#fff", color: "#000", borderColor: "#000", fontSize: "11px" }}
@@ -241,6 +253,7 @@ export default function Home() {
           onDeleteDocument={(id, name) => setShowDeleteDialog({ id, name })}
           onDeleteFolder={deleteFolder}
           onCreateFolder={(parentId) => setShowCreateFolderDialog({ parentId })}
+          onMoveDocument={(id, name, currentFolderId) => setShowMoveDialog({ id, name, currentFolderId })}
           onToggleFolderExpand={toggleFolderExpand}
           onSortByChange={setSortBy}
           onSortOrderChange={setSortOrder}
@@ -348,6 +361,20 @@ export default function Home() {
           clearError={clearError}
         />
       )}
+
+      <MoveToDialog
+        isOpen={!!showMoveDialog}
+        documentName={showMoveDialog?.name || ""}
+        folders={folders}
+        currentFolderId={showMoveDialog?.currentFolderId || null}
+        onMove={async (folderId) => {
+          if (showMoveDialog) {
+            await moveDocument(showMoveDialog.id, folderId);
+            setShowMoveDialog(null);
+          }
+        }}
+        onCancel={() => setShowMoveDialog(null)}
+      />
     </div>
   );
 }
