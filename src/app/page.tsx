@@ -11,6 +11,7 @@ import { DeleteConfirmDialog } from "@/components/DeleteConfirmDialog";
 import { CreateFolderDialog } from "@/components/CreateFolderDialog";
 import { ShareDialog } from "@/components/ShareDialog";
 import { MoveToDialog } from "@/components/MoveToDialog";
+import { AccessInfoPanel } from "@/components/AccessInfoPanel";
 import { useDocuments } from "@/hooks/useDocuments";
 
 export default function Home() {
@@ -52,6 +53,7 @@ export default function Home() {
   const [showCreateFolderDialog, setShowCreateFolderDialog] = useState<{ parentId: string | null } | null>(null);
   const [showShareDialog, setShowShareDialog] = useState(false);
   const [showMoveDialog, setShowMoveDialog] = useState<{ id: string; name: string; currentFolderId: string | null } | null>(null);
+  const [showAccessPanel, setShowAccessPanel] = useState(false);
 
   useEffect(() => {
     if (currentDocument) setMarkdown(currentDocument.content);
@@ -199,6 +201,15 @@ export default function Home() {
                 SHARE
               </button>
             </>
+          )}
+          {currentDocument && (
+            <button
+              onClick={() => setShowAccessPanel(true)}
+              className="shell-label px-3 py-1.5 transition-colors cursor-pointer border"
+              style={{ background: "#fff", color: "#000", borderColor: "#000", fontSize: "11px" }}
+            >
+              ACCESS
+            </button>
           )}
           <button
             onClick={() => setMode(mode === "view" ? "edit" : "view")}
@@ -359,6 +370,19 @@ export default function Home() {
           fetchShares={fetchSharesForDocument}
           error={error}
           clearError={clearError}
+        />
+      )}
+
+      {currentDocument && (
+        <AccessInfoPanel
+          isOpen={showAccessPanel}
+          documentId={currentDocument.id}
+          documentName={currentDocument.name}
+          ownerEmail={currentDocument.user_email}
+          onClose={() => setShowAccessPanel(false)}
+          onOpenShareDialog={() => setShowShareDialog(true)}
+          fetchShares={fetchSharesForDocument}
+          isOwner={isOwner}
         />
       )}
 
